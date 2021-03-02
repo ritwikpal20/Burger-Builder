@@ -9,6 +9,28 @@
     font-size: 1.2rem;
 }
 
+/* Custom scrollbar */
+/* width */
+.Burger::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+.Burger::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+.Burger::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+.Burger::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
 @media (min-width: 500px) and (max-height: 400px) {
     .Burger {
         width: 350px;

@@ -2,11 +2,13 @@ import { Component } from "react";
 import Aux from "../../hoc/Auxiliary";
 import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
+import Modal from "../../components/UI/Modal/Modal";
+import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 
 const INGREDIENT_PRICE = {
-    salad: 20,
-    meat: 50,
-    bacon: 70,
+    salad: 20.5,
+    meat: 50.75,
+    bacon: 70.255,
     cheese: 15,
 };
 
@@ -19,7 +21,23 @@ class BurgerBuilder extends Component {
             cheese: 0,
         },
         totalPrice: 50,
+        purchasable: false,
+        purchasing: false,
     };
+
+    updatePurchaseState() {
+        // state was immediately updated after using aIH or rIH method , using setState this way we ensure we get updated state
+        this.setState((prevState, props) => {
+            let sum = 0;
+            const ingredients = { ...prevState.ingredients };
+            for (let ingredient in ingredients) {
+                sum = sum + ingredients[ingredient];
+            }
+            return {
+                purchasable: sum > 0,
+            };
+        });
+    }
 
     addIngredientHandler = (type) => {
         // get a copy of old ingredients and modify it , and then set old state to this new one
@@ -34,6 +52,7 @@ class BurgerBuilder extends Component {
             ingredients: newIngredients,
             totalPrice: newPrice,
         });
+        this.updatePurchaseState();
     };
 
     removeIngredientHandler = (type) => {
@@ -53,6 +72,11 @@ class BurgerBuilder extends Component {
             ingredients: newIngredients,
             totalPrice: newPrice,
         });
+        this.updatePurchaseState();
+    };
+
+    purchaseHandler = () => {
+        this.setState({ purchasing: true });
     };
 
     render() {
@@ -63,12 +87,24 @@ class BurgerBuilder extends Component {
 
         return (
             <Aux>
-                <Burger ingredients={this.state.ingredients} />
-                <BuildControls
-                    ingredientAdded={this.addIngredientHandler}
-                    ingredientRemoved={this.removeIngredientHandler}
-                    disabled={disabledInfo}
-                />
+                <Modal show={this.state.purchasing}>
+                    <OrderSummary ingredients={this.state.ingredients} />
+                </Modal>
+                <div
+                    style={
+                        this.state.purchasing ? { filter: "blur(2px)" } : null
+                    }
+                >
+                    <Burger ingredients={this.state.ingredients} />
+                    <BuildControls
+                        ingredientAdded={this.addIngredientHandler}
+                        ingredientRemoved={this.removeIngredientHandler}
+                        disabled={disabledInfo}
+                        price={this.state.totalPrice}
+                        purchasable={this.state.purchasable}
+                        ordered={this.purchaseHandler}
+                    />
+                </div>
             </Aux>
         );
     }

@@ -1,0 +1,10 @@
+.Backdrop {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    /* The Modal need to sit above the Backdrop and the Backdrop needs to sit above other elements like Toolbar */
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.5);
+}

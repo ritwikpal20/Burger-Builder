@@ -1,10 +1,10 @@
-import Aux from "../../hoc/Auxiliary";
+import Aux from "../Auxiliary/Auxiliary";
 import classes from "./Layout.module.css";
-import Toolbar from "../Navigation/Toolbar/Toolbar";
-import SideDrawer from "../Navigation/SideDrawer/SideDrawer";
+import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
+import SideDrawer from "../../components/Navigation/SideDrawer/SideDrawer";
 import { Component } from "react";
 
-// The layout component has been to Class based component because , we need to manage the sidedrawer with a property to show it only when clicked a button on Toolbar and close it when clicked on backdrop
+// The layout component has been to Class based component because , we need to manage the sidedrawer with a property to show it only when clicked a button on Toolbar and close it when clicked on backdrop. And it will be moved to Hoc because it's only there to wrap another component.
 class Layout extends Component {
     state = {
         showSideDrawer: false,

@@ -82,28 +82,43 @@ class BurgerBuilder extends Component {
         this.setState({ purchasing: false });
     };
     purchaseContinueHandler = () => {
-        this.setState({ loading: true });
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: "Ritwik Pal",
-                address: {
-                    street: "Kgp",
-                    zipCode: 721,
-                    country: "India",
-                },
-            },
-            deliveryMethod: "fastest",
-        };
-        axios
-            .post("/orders.json", order)
-            .then((response) => {
-                this.setState({ loading: false, purchasing: false });
-            })
-            .catch((err) => {
-                this.setState({ loading: false, purchasing: false });
-            });
+        let queryParams = [];
+        for (let i in this.state.ingredients) {
+            queryParams.push(
+                encodeURIComponent(i) +
+                    "=" +
+                    encodeURIComponent(this.state.ingredients[i])
+            );
+        }
+
+        let queryString = queryParams.join("&");
+
+        this.props.history.push({
+            pathname: "/checkout",
+            search: "?" + queryString,
+        });
+        // this.setState({ loading: true });
+        // const order = {
+        //     ingredients: this.state.ingredients,
+        //     price: this.state.totalPrice,
+        //     customer: {
+        //         name: "Ritwik Pal",
+        //         address: {
+        //             street: "Kgp",
+        //             zipCode: 721,
+        //             country: "India",
+        //         },
+        //     },
+        //     deliveryMethod: "fastest",
+        // };
+        // axios
+        //     .post("/orders.json", order)
+        //     .then((response) => {
+        //         this.setState({ loading: false, purchasing: false });
+        //     })
+        //     .catch((err) => {
+        //         this.setState({ loading: false, purchasing: false });
+        //     });
     };
 
     render() {

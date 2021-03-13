@@ -13,6 +13,7 @@ const order = (props) => {
                     display: "inline-block",
                     padding: "2px",
                 }}
+                key={ig}
             >
                 {ig} ({props.ingredients[ig]})
             </span>

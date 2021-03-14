@@ -57,6 +57,9 @@ const Input = (props) => {
         <div className={classes.Input}>
             <label className={classes.Label}>{props.label}</label>
             {inputElement}
+            <p className={classes.ValidationError}>
+                <small>{props.errorMessage}</small>
+            </p>
         </div>
     );
 };

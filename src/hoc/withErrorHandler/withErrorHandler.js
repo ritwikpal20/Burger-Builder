@@ -5,33 +5,29 @@ import { Component } from "react";
 const withErrorHandler = (WrappedComponent, axios) => {
     return class extends Component {
         state = { error: null };
+        reqInterceptor = axios.interceptors.request.use(
+            (request) => {
+                this.setState({ error: null });
+                return request;
+            },
+            (err) => {
+                this.setState({ error: err });
+                return err;
+            }
+        );
+        resInterceptor = axios.interceptors.response.use(
+            (response) => response,
+            (err) => {
+                this.setState({ error: err });
+                return err;
+            }
+        );
 
         errorConfirmedHandler = () => {
             this.setState({ error: null });
         };
 
         render() {
-            if (this.reqInterceptor && this.resInterceptor) {
-                // Donot set up the interceptors again
-            } else {
-                this.reqInterceptor = axios.interceptors.request.use(
-                    (request) => {
-                        this.setState({ error: null });
-                        return request;
-                    },
-                    (err) => {
-                        this.setState({ error: err });
-                        return err;
-                    }
-                );
-                this.resInterceptor = axios.interceptors.response.use(
-                    (response) => response,
-                    (err) => {
-                        this.setState({ error: err });
-                        return err;
-                    }
-                );
-            }
             return (
                 <Aux>
                     <Modal

@@ -114,8 +114,6 @@ class ContactData extends Component {
         // stop reloading the page after submitting the from
         event.preventDefault();
 
-        this.setState({ loading: true });
-
         let formData = {};
         for (let formElementIdentifier in this.state.orderForm) {
             formData[formElementIdentifier] = this.state.orderForm[

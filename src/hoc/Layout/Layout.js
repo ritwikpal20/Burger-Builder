@@ -3,6 +3,7 @@ import classes from "./Layout.module.css";
 import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
 import SideDrawer from "../../components/Navigation/SideDrawer/SideDrawer";
 import { Component } from "react";
+import { connect } from "react-redux";
 
 // The layout component has been to Class based component because , we need to manage the sidedrawer with a property to show it only when clicked a button on Toolbar and close it when clicked on backdrop. And it will be moved to Hoc because it's only there to wrap another component.
 class Layout extends Component {
@@ -24,14 +25,24 @@ class Layout extends Component {
         return (
             <Aux>
                 <SideDrawer
+                    isAuth={this.props.isAuthenticated}
                     open={this.state.showSideDrawer}
                     closed={this.sideDrawerClosedHandler}
                 />
-                <Toolbar drawerToggleClicked={this.sideDrawerToggleHandler} />
+                <Toolbar
+                    isAuth={this.props.isAuthenticated}
+                    drawerToggleClicked={this.sideDrawerToggleHandler}
+                />
                 <main className={classes.Content}>{this.props.children}</main>
             </Aux>
         );
     }
 }
 
-export default Layout;
+const mapStateToProps = (state) => {
+    return {
+        isAuthenticated: state.auth.token != null,
+    };
+};
+
+export default connect(mapStateToProps)(Layout);

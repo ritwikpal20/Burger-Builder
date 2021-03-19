@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import * as actions from "../../store/actions/index";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import Aux from "../../hoc/Auxiliary/Auxiliary";
+import { Redirect } from "react-router";
 
 class Auth extends Component {
     state = {
@@ -146,6 +147,11 @@ class Auth extends Component {
         if (!this.props.loading) {
             authForm = (
                 <Aux>
+                    {this.state.isSignup ? (
+                        <h2>Sign Up Form</h2>
+                    ) : (
+                        <h2>Sign In Form</h2>
+                    )}
                     {this.props.error ? (
                         <p>{this.props.error.message}</p>
                     ) : null}
@@ -162,6 +168,9 @@ class Auth extends Component {
                 </Aux>
             );
         }
+        if (this.props.isAuthenticated) {
+            authForm = <Redirect to={this.props.authRedirectPath} />;
+        }
         return <div className={classes.Auth}>{authForm}</div>;
     }
 }
@@ -170,6 +179,8 @@ const mapStateToProps = (state) => {
     return {
         loading: state.auth.loading,
         error: state.auth.error,
+        isAuthenticated: state.auth.token != null,
+        authRedirectPath: state.auth.authRedirectPath,
     };
 };
 const mapDispatchToProps = (dispatch) => {

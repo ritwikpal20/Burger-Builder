@@ -60,11 +60,12 @@ export const fetchOrdersStart = () => {
     };
 };
 // either  pass token as a parameter to action creator , or pass getState along with dispatch
-export const fetchOrders = (token) => {
+export const fetchOrders = (token, userId) => {
     return (dispatch) => {
         dispatch(fetchOrdersStart());
+        const queryParams = `?auth=${token}&orderBy="userId"&equalTo="${userId}"`;
         axios
-            .get("/orders.json?auth=" + token)
+            .get("/orders.json" + queryParams)
             .then((response) => {
                 let fetchedOrders = [];
                 for (let orderId in response.data) {

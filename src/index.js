@@ -10,6 +10,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import thunk from "redux-thunk";
+import { authCheckState } from "./store/actions";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const rootReducer = combineReducers({
@@ -21,7 +22,7 @@ const store = createStore(
     rootReducer,
     composeEnhancers(applyMiddleware(thunk))
 );
-
+store.dispatch(authCheckState());
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>

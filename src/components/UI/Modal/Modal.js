@@ -14,7 +14,6 @@ class Modal extends Component {
     }
 
     render() {
-        console.log("Modal rendering");
         return (
             <Aux>
                 <Backdrop

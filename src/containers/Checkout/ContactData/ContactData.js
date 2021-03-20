@@ -7,6 +7,7 @@ import Input from "../../../components/UI/Input/Input";
 import { connect } from "react-redux";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import * as actions from "../../../store/actions/index";
+import { checkValidity } from "../../../shared/utility";
 
 class ContactData extends Component {
     state = {
@@ -141,7 +142,7 @@ class ContactData extends Component {
         [
             updatedOrderFormElement.valid,
             updatedOrderFormElement.errorMessage,
-        ] = this.checkValidity(
+        ] = checkValidity(
             event.target.value,
             updatedOrderFormElement.validation
         );
@@ -158,36 +159,6 @@ class ContactData extends Component {
             formIsValid: formIsValid,
         });
     };
-
-    checkValidity(value, rules) {
-        let isValid = true;
-        let errorMessage = [];
-
-        if (rules.required) {
-            isValid = value.trim() !== "" && isValid;
-            if (value.trim() === "")
-                errorMessage.push("Enter value in compulsory field.");
-        }
-
-        if (rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid;
-            if (value.length < rules.minLength)
-                errorMessage.push("Min Length is " + rules.minLength + ".");
-        }
-
-        if (rules.maxLength) {
-            isValid = value.length <= rules.maxLength && isValid;
-            if (value.length > rules.maxLength)
-                errorMessage.push("Max Length is " + rules.maxLength + ".");
-        }
-
-        if (rules.number) {
-            isValid = !isNaN(value) && isValid;
-            if (isNaN(value)) errorMessage.push("Must be a number.");
-        }
-
-        return [isValid, errorMessage];
-    }
 
     render() {
         let form = <Spinner />;

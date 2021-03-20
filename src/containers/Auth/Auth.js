@@ -7,6 +7,7 @@ import * as actions from "../../store/actions/index";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import Aux from "../../hoc/Auxiliary/Auxiliary";
 import { Redirect } from "react-router";
+import { checkValidity } from "../../shared/utility";
 
 class Auth extends Component {
     state = {
@@ -44,36 +45,6 @@ class Auth extends Component {
         isSignup: true,
     };
 
-    checkValidity(value, rules) {
-        let isValid = true;
-        let errorMessage = [];
-
-        if (rules.required) {
-            isValid = value.trim() !== "" && isValid;
-            if (value.trim() === "")
-                errorMessage.push("Enter value in compulsory field.");
-        }
-
-        if (rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid;
-            if (value.length < rules.minLength)
-                errorMessage.push("Min Length is " + rules.minLength + ".");
-        }
-
-        if (rules.maxLength) {
-            isValid = value.length <= rules.maxLength && isValid;
-            if (value.length > rules.maxLength)
-                errorMessage.push("Max Length is " + rules.maxLength + ".");
-        }
-
-        if (rules.number) {
-            isValid = !isNaN(value) && isValid;
-            if (isNaN(value)) errorMessage.push("Must be a number.");
-        }
-
-        return [isValid, errorMessage];
-    }
-
     inputChangedHandler = (event, controlName) => {
         let updatedControls = { ...this.state.controls };
         let updatedControlsElement = {
@@ -83,7 +54,7 @@ class Auth extends Component {
         [
             updatedControlsElement.valid,
             updatedControlsElement.errorMessage,
-        ] = this.checkValidity(
+        ] = checkValidity(
             event.target.value,
             updatedControlsElement.validation
         );

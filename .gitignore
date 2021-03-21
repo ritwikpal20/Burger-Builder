@@ -12,7 +12,6 @@
 /build
 .netlify
 .firebaserc
-firebase.json
 .firebase
 
 # misc

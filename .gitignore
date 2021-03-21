@@ -11,6 +11,9 @@
 # production
 /build
 .netlify
+.firebaserc
+firebase.json
+.firebase
 
 # misc
 .DS_Store

@@ -4,7 +4,7 @@ import { Route, Redirect } from "react-router-dom";
 import ContactData from "./ContactData/ContactData";
 import { connect } from "react-redux";
 
-class Checkout extends Component {
+export class Checkout extends Component {
     checkoutContinuedHandler = () => {
         this.props.history.replace("/checkout/contact-data");
     };

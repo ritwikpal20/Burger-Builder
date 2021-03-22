@@ -6,7 +6,7 @@ import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import * as actions from "../../store/actions/index";
 import { connect } from "react-redux";
 
-class Orders extends Component {
+export class Orders extends Component {
     componentDidMount() {
         this.props.onFetchOrders(this.props.token, this.props.userId);
     }

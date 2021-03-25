@@ -9,6 +9,7 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions/index";
+import classes from "./BurgerBuilder.module.css";
 
 export class BurgerBuilder extends Component {
     state = {
@@ -63,7 +64,7 @@ export class BurgerBuilder extends Component {
         );
         if (this.props.ings) {
             burger = (
-                <Aux>
+                <div className={classes.BurgerBuilder}>
                     <Burger ingredients={this.props.ings} />
                     <BuildControls
                         ingredientAdded={this.props.onIngredientAdded}
@@ -73,7 +74,7 @@ export class BurgerBuilder extends Component {
                         purchasable={this.updatePurchaseState(this.props.ings)}
                         ordered={this.purchaseHandler}
                     />
-                </Aux>
+                </div>
             );
             orderSummary = (
                 <OrderSummary

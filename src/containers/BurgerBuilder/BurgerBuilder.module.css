@@ -1,0 +1,9 @@
+.BurgerBuilder {
+    display: flex;
+    max-width: 1500px;
+    justify-content: center;
+    margin: auto;
+    flex-wrap: wrap;
+    width: 100%;
+}
+

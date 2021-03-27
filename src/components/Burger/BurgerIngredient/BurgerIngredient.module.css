@@ -1,18 +1,22 @@
 .BreadBottom {
     background: linear-gradient(#f08e4a, #e27b36);
-    height: 13%;
+    min-height: 13%;
     width: 80%;
     border-radius: 0px 0px 30px 30px;
     box-shadow: inset -15px 0 #c15711;
+    margin: auto;
+    margin-top: 1%;
 }
 
 .BreadTop {
     background: linear-gradient(#bc581e, #e27b36);
-    height: 20%;
+    min-height: 20%;
     width: 80%;
     border-radius: 50% 50% 0px 0px;
     box-shadow: inset -15px 0 #c15711;
     position: relative;
+    margin: auto;
+    margin-bottom: 1%;
 }
 
 .Seeds1 {
@@ -79,7 +83,7 @@
 
 .Meat {
     width: 80%;
-    height: 8%;
+    min-height: 8%;
     background: linear-gradient(#7f3608, #702e05);
     margin: 1% auto;
     border-radius: 15px;
@@ -87,7 +91,7 @@
 
 .Cheese {
     width: 90%;
-    height: 4.5%;
+    min-height: 4.5%;
     margin: 1% auto;
     background: linear-gradient(#f4d004, #d6bb22);
     border-radius: 20px;
@@ -95,7 +99,7 @@
 
 .Salad {
     width: 85%;
-    height: 7%;
+    min-height: 7%;
     margin: 1% auto;
     background: linear-gradient(#228c1d, #91ce50);
     border-radius: 20px;
@@ -103,7 +107,7 @@
 
 .Bacon {
     width: 80%;
-    height: 3%;
+    min-height: 3%;
     background: linear-gradient(#bf3813, #c45e38);
     margin: 1% auto;
 }

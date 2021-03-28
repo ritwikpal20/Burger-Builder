@@ -12,10 +12,22 @@ View the website at:
 -   `React & Redux` as frontend
 -   `Firebase` as backend
 
+## Contributing :
+
+Fork the repo and clone it into your local machine and run
+
+```
+npm install
+```
+
+Make changes and create a PR , a comment with the live preview of website with changes will be added to the PR by Github Actions.
+
+On merging the PR the changes will be automatically be seen on the main website.
+
 ## Some Insights :
 
-For viewing and placing orders , the user is required to sign up. A token is saved on browser local storage , which is then send with each request to API endpoint that is protected.
+-   For viewing and placing orders , the user is required to sign up. A token is saved on browser local storage , which is then send with each request to API endpoint that is protected.
 
-The website is hosted on Firebase , which also provide as backend infrastructure (act as a API server) to which we can send request from our React app. It always returns us the index.html and javascript files. Any url we make request is parsed by React and it then renders different component.
+-   The website is hosted on Firebase , which also provide as backend infrastructure (act as a API server) to which we can send request from our React app. It always returns us the index.html and javascript files. Any url we make request is parsed by React and it then renders different component.
 
-Some routes are loaded via **lazy loading** , to decrease load time upfront when user visits the site , since they may not visit all the routes.
+-   Some routes are loaded via **lazy loading** , to decrease load time upfront when user visits the site , since they may not visit all the routes.

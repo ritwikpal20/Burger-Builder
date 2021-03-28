@@ -13,7 +13,7 @@ import thunk from "redux-thunk";
 import { authCheckState } from "./store/actions";
 
 import createSagaMiddleware from "redux-saga";
-import { watchAuth } from "./store/sagas/index";
+import { watchAuth, watchBurgerBuilder, watchOrder } from "./store/sagas/index";
 
 const composeEnhancers =
     process.env.NODE_ENV === "development"
@@ -36,6 +36,8 @@ const store = createStore(
 );
 
 sagaMiddleware.run(watchAuth);
+sagaMiddleware.run(watchBurgerBuilder);
+sagaMiddleware.run(watchOrder);
 
 store.dispatch(authCheckState());
 ReactDOM.render(

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import Button from "../../../components/UI/Button/Button";
 import classes from "./ContactData.module.css";
 import axios from "../../../axios-orders";
@@ -9,132 +9,127 @@ import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import * as actions from "../../../store/actions/index";
 import { checkValidity } from "../../../shared/utility";
 
-class ContactData extends Component {
-    state = {
-        orderForm: {
-            name: {
-                elementType: "input",
-                elementConfig: {
-                    type: "text",
-                    placeholder: "Your Name",
-                },
-                value: "",
-                validation: {
-                    required: true,
-                },
-                valid: false,
-                touched: false,
-                errorMessage: [],
+const ContactData = (props) => {
+    const [orderForm, setOrderForm] = useState({
+        name: {
+            elementType: "input",
+            elementConfig: {
+                type: "text",
+                placeholder: "Your Name",
             },
-
-            street: {
-                elementType: "input",
-                elementConfig: {
-                    type: "text",
-                    placeholder: "Your Street Name",
-                },
-                value: "",
-                validation: {
-                    required: true,
-                },
-                valid: false,
-                touched: false,
-                errorMessage: [],
+            value: "",
+            validation: {
+                required: true,
             },
-            zipCode: {
-                elementType: "input",
-                elementConfig: {
-                    type: "text",
-                    placeholder: "ZIP CODE",
-                },
-                value: "",
-                validation: {
-                    required: true,
-                    minLength: 6,
-                    maxLength: 6,
-                    number: true,
-                },
-                valid: false,
-                touched: false,
-                errorMessage: [],
-            },
-            country: {
-                elementType: "input",
-                elementConfig: {
-                    type: "text",
-                    placeholder: "Your Country",
-                },
-                value: "",
-                validation: {
-                    required: true,
-                },
-                valid: false,
-                touched: false,
-                errorMessage: [],
-            },
-            email: {
-                elementType: "input",
-                elementConfig: {
-                    type: "email",
-                    placeholder: "Your Mail",
-                },
-                value: "",
-                validation: {
-                    required: true,
-                },
-                valid: false,
-                touched: false,
-                errorMessage: [],
-            },
-            deliveryMethod: {
-                elementType: "select",
-                elementConfig: {
-                    options: [
-                        {
-                            value: "cheapest",
-                            displayValue: "Cheapest",
-                        },
-                        {
-                            value: "fastest",
-                            displayValue: "Fastest",
-                        },
-                    ],
-                },
-                valid: true,
-                validation: {},
-                value: "cheapest",
-                errorMessage: [],
-            },
+            valid: false,
+            touched: false,
+            errorMessage: [],
         },
-        formIsValid: false,
-    };
 
-    // componentDidMount() {}
+        street: {
+            elementType: "input",
+            elementConfig: {
+                type: "text",
+                placeholder: "Your Street Name",
+            },
+            value: "",
+            validation: {
+                required: true,
+            },
+            valid: false,
+            touched: false,
+            errorMessage: [],
+        },
+        zipCode: {
+            elementType: "input",
+            elementConfig: {
+                type: "text",
+                placeholder: "ZIP CODE",
+            },
+            value: "",
+            validation: {
+                required: true,
+                minLength: 6,
+                maxLength: 6,
+                number: true,
+            },
+            valid: false,
+            touched: false,
+            errorMessage: [],
+        },
+        country: {
+            elementType: "input",
+            elementConfig: {
+                type: "text",
+                placeholder: "Your Country",
+            },
+            value: "",
+            validation: {
+                required: true,
+            },
+            valid: false,
+            touched: false,
+            errorMessage: [],
+        },
+        email: {
+            elementType: "input",
+            elementConfig: {
+                type: "email",
+                placeholder: "Your Mail",
+            },
+            value: "",
+            validation: {
+                required: true,
+            },
+            valid: false,
+            touched: false,
+            errorMessage: [],
+        },
+        deliveryMethod: {
+            elementType: "select",
+            elementConfig: {
+                options: [
+                    {
+                        value: "cheapest",
+                        displayValue: "Cheapest",
+                    },
+                    {
+                        value: "fastest",
+                        displayValue: "Fastest",
+                    },
+                ],
+            },
+            valid: true,
+            validation: {},
+            value: "cheapest",
+            errorMessage: [],
+        },
+    });
+    const [formIsValid, setFormIsValid] = useState(false);
 
-    orderHandler = (event) => {
+    const orderHandler = (event) => {
         // stop reloading the page after submitting the from
         event.preventDefault();
 
         let formData = {};
-        for (let formElementIdentifier in this.state.orderForm) {
-            formData[formElementIdentifier] = this.state.orderForm[
-                formElementIdentifier
-            ].value;
+        for (let formElementIdentifier in orderForm) {
+            formData[formElementIdentifier] =
+                orderForm[formElementIdentifier].value;
         }
         const order = {
-            ingredients: this.props.ings,
-            price: this.props.price,
+            ingredients: props.ings,
+            price: props.price,
             orderData: formData,
-            userId: this.props.userId,
+            userId: props.userId,
         };
-        this.props.onOrderBurger(order, this.props.token);
+        props.onOrderBurger(order, props.token);
     };
 
-    inputChangedHandler = (event, inputIdentifier) => {
+    const inputChangedHandler = (event, inputIdentifier) => {
         // console.log(event.target.value, " ", inputIdentifier);
 
         // Since in nested object , spread syntax doesn't perform deep clone , therefore, we need to use spread syntax until we reach the key we need to change.
-        let updatedOrderForm = { ...this.state.orderForm };
+        let updatedOrderForm = { ...orderForm };
         let updatedOrderFormElement = {
             ...updatedOrderForm[inputIdentifier],
         };
@@ -154,60 +149,51 @@ class ContactData extends Component {
             formIsValid =
                 updatedOrderForm[formElementIdentifier].valid && formIsValid;
         }
-        this.setState({
-            orderForm: updatedOrderForm,
-            formIsValid: formIsValid,
-        });
+        setOrderForm(updatedOrderForm);
+        setFormIsValid(formIsValid);
     };
 
-    render() {
-        let form = <Spinner />;
-        if (!this.props.loading) {
-            const formElementsArray = [];
-            for (let key in this.state.orderForm) {
-                formElementsArray.push({
-                    id: key,
-                    config: this.state.orderForm[key],
-                });
-            }
-
-            form = (
-                <form onSubmit={this.orderHandler}>
-                    {formElementsArray.map((formElement) => (
-                        <Input
-                            key={formElement.id}
-                            elementType={formElement.config.elementType}
-                            elementConfig={formElement.config.elementConfig}
-                            value={formElement.config.value}
-                            invalid={!formElement.config.valid}
-                            shouldValidate={formElement.config.validation}
-                            touched={formElement.config.touched}
-                            errorMessage={formElement.config.errorMessage.join(
-                                " "
-                            )}
-                            changed={(event) =>
-                                this.inputChangedHandler(event, formElement.id)
-                            }
-                        />
-                    ))}
-                    <br />
-                    <Button
-                        btnType="Success"
-                        disabled={!this.state.formIsValid}
-                    >
-                        ORDER
-                    </Button>
-                </form>
-            );
+    let form = <Spinner />;
+    if (!props.loading) {
+        const formElementsArray = [];
+        for (let key in orderForm) {
+            formElementsArray.push({
+                id: key,
+                config: orderForm[key],
+            });
         }
-        return (
-            <div className={classes.ContactData}>
-                <h4>Enter your contact data</h4>
-                {form}
-            </div>
+
+        form = (
+            <form onSubmit={orderHandler}>
+                {formElementsArray.map((formElement) => (
+                    <Input
+                        key={formElement.id}
+                        elementType={formElement.config.elementType}
+                        elementConfig={formElement.config.elementConfig}
+                        value={formElement.config.value}
+                        invalid={!formElement.config.valid}
+                        shouldValidate={formElement.config.validation}
+                        touched={formElement.config.touched}
+                        errorMessage={formElement.config.errorMessage.join(" ")}
+                        changed={(event) =>
+                            inputChangedHandler(event, formElement.id)
+                        }
+                    />
+                ))}
+                <br />
+                <Button btnType="Success" disabled={!formIsValid}>
+                    ORDER
+                </Button>
+            </form>
         );
     }
-}
+    return (
+        <div className={classes.ContactData}>
+            <h4>Enter your contact data</h4>
+            {form}
+        </div>
+    );
+};
 
 const mapStateToProps = (state) => {
     return {

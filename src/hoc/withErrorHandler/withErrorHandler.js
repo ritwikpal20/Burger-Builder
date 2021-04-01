@@ -1,53 +1,49 @@
 import Modal from "../../components/UI/Modal/Modal";
 import Aux from "../Auxiliary/Auxiliary";
-import { Component } from "react";
+import { useState, useEffect } from "react";
 
 const withErrorHandler = (WrappedComponent, axios) => {
-    return class extends Component {
-        state = { error: null };
-        reqInterceptor = axios.interceptors.request.use(
+    return (props) => {
+        const [error, setError] = useState(null);
+        const reqInterceptor = axios.interceptors.request.use(
             (request) => {
-                this.setState({ error: null });
+                setError(null);
                 return request;
             },
             (err) => {
-                this.setState({ error: err });
+                setError(err);
                 return err;
             }
         );
-        resInterceptor = axios.interceptors.response.use(
+        const resInterceptor = axios.interceptors.response.use(
             (response) => response,
             (err) => {
-                this.setState({ error: err });
+                setError(err);
                 return err;
             }
         );
 
-        errorConfirmedHandler = () => {
-            this.setState({ error: null });
+        const errorConfirmedHandler = () => {
+            setError(null);
         };
 
-        render() {
-            return (
-                <Aux>
-                    <Modal
-                        show={this.state.error}
-                        modalClosed={this.errorConfirmedHandler}
-                    >
-                        {this.state.error ? this.state.error.message : null}
-                    </Modal>
+        useEffect(() => {
+            return () => {
+                axios.interceptors.request.eject(reqInterceptor);
+                axios.interceptors.response.eject(resInterceptor);
+            };
+        }, [reqInterceptor, resInterceptor]);
 
-                    {/* You can fine tune the error msg to be displayed on the screen with the local catch method , so that the application comes to standstill instead of displaying spinner. */}
-                    <WrappedComponent {...this.props} />
-                </Aux>
-            );
-        }
+        return (
+            <Aux>
+                <Modal show={error} modalClosed={errorConfirmedHandler}>
+                    {error ? error.message : null}
+                </Modal>
 
-        // withErrorHandler is a hoc , therefore we can wrap multiple components with it , and therefore we set up multiple interceptors , but which we might not need when the component is unmounted since it leads to state errors and memory leaks.Therefore, we need to remove those.
-        componentWillUnmount() {
-            axios.interceptors.request.eject(this.reqInterceptor);
-            axios.interceptors.response.eject(this.resInterceptor);
-        }
+                {/* You can fine tune the error msg to be displayed on the screen with the local catch method , so that the application comes to standstill instead of displaying spinner. */}
+                <WrappedComponent {...props} />
+            </Aux>
+        );
     };
 };
 
